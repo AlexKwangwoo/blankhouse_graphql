@@ -74,3 +74,8 @@
 2.  babel을 해준코드로 heroku에 올려야함 package json 참고
     "build": "babel src --out-dir build", 한뒤
     "start": "node build/server" 실행해서 npm run dev와 똑같이 작동하면됨!
+
+<!-- // 새로 만들기 시작 -->
+
+1. Query resolver 안만들어주면 애러 자꾸생성함 (Type Query must define one or more fields.)
+   User 만든후 seeProfile해주니 괜찮아 졌음
