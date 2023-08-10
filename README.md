@@ -79,3 +79,5 @@
 
 1. Query resolver 안만들어주면 애러 자꾸생성함 (Type Query must define one or more fields.)
    User 만든후 seeProfile해주니 괜찮아 졌음
+2. desc / asc
+3.
