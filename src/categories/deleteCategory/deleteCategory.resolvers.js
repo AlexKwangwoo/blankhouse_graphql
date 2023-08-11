@@ -9,6 +9,7 @@ export default {
           id,
         },
       });
+      console.log("existingCategory", existingCategory);
       if (!existingCategory) {
         return {
           ok: false,

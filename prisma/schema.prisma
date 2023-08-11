@@ -29,6 +29,7 @@ model User {
   gender            String?
   language          String?
   currency          String?
+  rooms             Room[]
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   // Message   Message[]
@@ -40,4 +41,30 @@ model Category {
   kind      String
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  rooms     Room[]
+}
+
+model Room {
+  id               Int       @id @default(autoincrement())
+  name             String
+  country          String
+  city             String
+  price            Int
+  cleaning_fee     Int
+  number_of_room   Int
+  number_of_toilet Int
+  number_of_bed    Int
+  maximum_guests   Int
+  description      String?
+  address          String
+  pet_friendly     Boolean
+  house_type       String
+  things_to_know   String?
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId           Int
+  // 테스트겸 category가 지워져도 방은 남게 했고 유저 지워지면 같이 삭제되게함!
+  category         Category? @relation(fields: [categoryId], references: [id])
+  categoryId       Int?
+  createdAt        DateTime  @default(now())
+  updatedAt        DateTime  @updatedAt
 }
