@@ -8,6 +8,7 @@ export default {
         _,
         {
           id,
+          categoryId,
           name,
           country,
           city,
@@ -25,6 +26,25 @@ export default {
         },
         { loggedInUser, protectResolver }
       ) => {
+        if (categoryId) {
+          const checkCategory = await client.category.findUnique({
+            where: { id: categoryId },
+          });
+          if (checkCategory === null) {
+            return {
+              ok: false,
+              error: `Category does not exist`,
+            };
+          }
+
+          if (checkCategory.kind !== "room") {
+            return {
+              ok: false,
+              error: "Please select room kind",
+            };
+          }
+        }
+
         const existRoom = await client.room.findUnique({
           where: {
             id,
@@ -42,6 +62,13 @@ export default {
             id,
           },
           data: {
+            ...(categoryId && {
+              category: {
+                connect: {
+                  id: categoryId,
+                },
+              },
+            }),
             name,
             country,
             city,
@@ -65,7 +92,7 @@ export default {
         } else {
           return {
             ok: false,
-            error: "Could not update category.",
+            error: "Could not update room.",
           };
         }
       }

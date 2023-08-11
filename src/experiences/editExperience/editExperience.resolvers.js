@@ -8,64 +8,85 @@ export default {
         _,
         {
           id,
+          categoryId,
           name,
           country,
           city,
           price,
-          cleaning_fee,
-          number_of_room,
-          number_of_toilet,
-          number_of_bed,
-          maximum_guests,
-          description,
           address,
-          pet_friendly,
-          house_type,
+          start,
+          end,
+          description,
           things_to_know,
         },
         { loggedInUser, protectResolver }
       ) => {
-        const existRoom = await client.room.findUnique({
+        if (categoryId) {
+          const checkCategory = await client.category.findUnique({
+            where: { id: categoryId },
+          });
+          if (checkCategory === null) {
+            return {
+              ok: false,
+              error: `Category does not exist`,
+            };
+          }
+
+          if (checkCategory.kind !== "experience") {
+            return {
+              ok: false,
+              error: "Please select experience kind",
+            };
+          }
+        }
+
+        const existExperience = await client.experience.findUnique({
           where: {
             id,
           },
         });
-        if (!existRoom) {
+        if (!existExperience) {
           return {
             ok: false,
-            error: "This room does not exist.",
+            error: "This experience does not exist.",
           };
         }
 
-        const updatedRoom = await client.room.update({
+        const formattedStart = new Date(start).toISOString();
+        const formattedEnd = new Date(end).toISOString();
+
+        const updatedExperience = await client.experience.update({
           where: {
             id,
           },
           data: {
+            ...(categoryId && {
+              category: {
+                connect: {
+                  id: categoryId,
+                },
+              },
+            }), //uglyPassword 있다면! password uglyPassword를 넣겠다!
+
             name,
             country,
             city,
             price,
-            cleaning_fee,
-            number_of_room,
-            number_of_toilet,
-            number_of_bed,
-            maximum_guests,
-            description,
             address,
-            pet_friendly,
-            house_type,
+            start: formattedStart,
+            end: formattedEnd,
+            description,
             things_to_know,
           },
         });
-        if (updatedRoom.id) {
+        if (updatedExperience.id) {
           return {
             ok: true,
           };
         } else {
           return {
             ok: false,
-            error: "Could not update category.",
+            error: "Could not update experience.",
           };
         }
       }

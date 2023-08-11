@@ -4,6 +4,7 @@ export default gql`
   type Mutation {
     editRoom(
       id: Int!
+      categoryId: Int
       name: String
       country: String
       city: String
