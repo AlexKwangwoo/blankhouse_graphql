@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Experience" ALTER COLUMN "start" SET DATA TYPE TIME(2),
+ALTER COLUMN "end" SET DATA TYPE TIME(2);

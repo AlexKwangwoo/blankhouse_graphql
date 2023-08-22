@@ -52,8 +52,11 @@ export default {
           };
         }
 
-        const formattedStart = new Date(start).toISOString();
-        const formattedEnd = new Date(end).toISOString();
+        var changeStart = "2023-10-10T" + start + ":00.000Z";
+        var changeEnd = "2023-10-11T" + end + ":00.000Z";
+
+        // const formattedStart = new Date(start).toISOString();
+        // const formattedEnd = new Date(end).toISOString();
 
         const updatedExperience = await client.experience.update({
           where: {
@@ -73,8 +76,8 @@ export default {
             city,
             price,
             address,
-            start: formattedStart,
-            end: formattedEnd,
+            start: changeStart,
+            end: changeEnd,
             description,
             things_to_know,
           },

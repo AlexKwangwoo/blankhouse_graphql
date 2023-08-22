@@ -19,6 +19,8 @@ export default {
       },
       { loggedInUser }
     ) => {
+      console.log("start", start);
+      console.log("end", end);
       const checkCategory = await client.category.findUnique({
         where: { id: categoryId },
       });
@@ -54,8 +56,11 @@ export default {
           error: "This experience's name exists already .",
         };
       }
-      const formattedStart = new Date(start).toISOString();
-      const formattedEnd = new Date(end).toISOString();
+      var changeStart = "2023-10-10T" + start + ":00.000Z";
+      var changeEnd = "2023-10-11T" + end + ":00.000Z";
+
+      // const formattedStart = new Date(start).toISOString();
+      // const formattedEnd = new Date(end).toISOString();
 
       const experience = await client.experience.create({
         data: {
@@ -74,8 +79,8 @@ export default {
           city,
           price,
           address,
-          start: formattedStart,
-          end: formattedEnd,
+          start: changeStart,
+          end: changeEnd,
           description,
           things_to_know,
         },

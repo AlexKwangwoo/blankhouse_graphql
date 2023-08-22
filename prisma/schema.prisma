@@ -31,6 +31,7 @@ model User {
   currency          String?
   rooms             Room[]
   experiences       Experience[]
+  reviews           Review[]
   createdAt         DateTime     @default(now())
   updatedAt         DateTime     @updatedAt
   // Message   Message[]
@@ -64,6 +65,7 @@ model Room {
   things_to_know   String?
   user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           Int
+  reviews          Review[]
   // 테스트겸 category가 지워져도 방은 남게 했고 유저 지워지면 같이 삭제되게함!
   category         Category? @relation(fields: [categoryId], references: [id])
   categoryId       Int?
@@ -78,12 +80,33 @@ model Experience {
   name           String
   price          Int
   address        String
-  start          DateTime
-  end            DateTime
+  start          DateTime  @db.Time(2)
+  end            DateTime  @db.Time(2)
   description    String?
   things_to_know String?
   user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId         Int
   category       Category? @relation(fields: [categoryId], references: [id])
   categoryId     Int?
+  reviews        Review[]
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+}
+
+model Review {
+  id                   Int         @id @default(autoincrement())
+  user                 User?       @relation(fields: [userId], references: [id])
+  userId               Int?
+  experience           Experience? @relation(fields: [experienceId], references: [id])
+  experienceId         Int?
+  room                 Room?       @relation(fields: [roomId], references: [id])
+  roomId               Int?
+  payload              String
+  rating               Int         @default(0)
+  cleanliness_rating   Int         @default(0)
+  communication_rating Int         @default(0)
+  location_rating      Int         @default(0)
+  accuracy_rating      Int         @default(0)
+  check_in_rating      Int         @default(0)
+  experience_rating    Int         @default(0)
 }
