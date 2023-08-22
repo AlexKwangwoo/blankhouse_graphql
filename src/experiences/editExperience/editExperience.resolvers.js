@@ -18,9 +18,36 @@ export default {
           end,
           description,
           things_to_know,
+          perksId,
         },
         { loggedInUser, protectResolver }
       ) => {
+        let perkDetail = [];
+        if (perksId) {
+          console.log("perksId", perksId);
+          let result = true;
+          await Promise.all(
+            perksId.map(async (each) => {
+              const checkPerk = await client.perk.findUnique({
+                where: { id: each },
+              });
+              if (checkPerk === null) {
+                result = false;
+              } else {
+                perkDetail.push({ connect: { id: each } });
+              }
+            })
+          );
+          console.log("resultresult", result);
+
+          if (!result) {
+            return {
+              ok: false,
+              error: `Perk does not exist`,
+            };
+          }
+        }
+
         if (categoryId) {
           const checkCategory = await client.category.findUnique({
             where: { id: categoryId },
@@ -58,6 +85,9 @@ export default {
         // const formattedStart = new Date(start).toISOString();
         // const formattedEnd = new Date(end).toISOString();
 
+        // console.log("changeStart", changeStart);
+        // console.log("changeEnd", changeEnd);
+        console.log("perkDetail", perkDetail);
         const updatedExperience = await client.experience.update({
           where: {
             id,
@@ -70,14 +100,20 @@ export default {
                 },
               },
             }), //uglyPassword 있다면! password uglyPassword를 넣겠다!
-
+            ...(perksId && {
+              perk: {
+                connect: perksId.map((id) => {
+                  return { id: id };
+                }),
+              },
+            }),
             name,
             country,
             city,
             price,
             address,
-            start: changeStart,
-            end: changeEnd,
+            ...(start && { start: changeStart }),
+            ...(end && { end: changeEnd }),
             description,
             things_to_know,
           },

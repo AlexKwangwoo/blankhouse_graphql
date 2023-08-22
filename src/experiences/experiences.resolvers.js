@@ -10,7 +10,29 @@ export default {
         });
       }
     },
+    perk: async ({ id }) => {
+      if (id) {
+        return await client.perk.findMany({
+          where: {
+            experience: {
+              some: {
+                id,
+              },
+            },
+          },
+        });
+      }
+    },
     start: ({ start }) => start.toISOString(),
     end: ({ end }) => end.toISOString(),
+  },
+  Perk: {
+    experience: async ({ id }) => {
+      if (id) {
+        return await client.experience.findMany({
+          where: { id },
+        });
+      }
+    },
   },
 };

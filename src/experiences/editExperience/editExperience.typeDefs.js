@@ -9,11 +9,12 @@ export default gql`
       country: String
       city: String
       price: Int
-      start: Date!
-      end: Date!
+      start: Date
+      end: Date
       description: String
       address: String
       things_to_know: String
+      perksId: [Int]
     ): MutationResponse!
   }
 `;
