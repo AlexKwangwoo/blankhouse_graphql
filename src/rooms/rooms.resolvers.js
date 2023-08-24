@@ -10,5 +10,50 @@ export default {
         });
       }
     },
+    amenity: async ({ id }) => {
+      if (id) {
+        return await client.amenity.findMany({
+          where: {
+            room: {
+              some: {
+                id,
+              },
+            },
+          },
+        });
+      }
+    },
+    addOnService: async ({ id }) => {
+      if (id) {
+        return await client.addOnService.findMany({
+          where: {
+            room: {
+              some: {
+                id,
+              },
+            },
+          },
+        });
+      }
+    },
+  },
+  Amenity: {
+    room: async ({ id }) => {
+      if (id) {
+        return await client.room.findMany({
+          where: { id },
+        });
+      }
+    },
+  },
+
+  AddOnService: {
+    room: async ({ id }) => {
+      if (id) {
+        return await client.room.findMany({
+          where: { id },
+        });
+      }
+    },
   },
 };

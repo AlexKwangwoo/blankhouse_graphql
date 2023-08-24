@@ -48,7 +48,7 @@ model Category {
 }
 
 model Room {
-  id               Int       @id @default(autoincrement())
+  id               Int            @id @default(autoincrement())
   name             String
   country          String
   city             String
@@ -63,14 +63,34 @@ model Room {
   pet_friendly     Boolean
   house_type       String
   things_to_know   String?
-  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user             User           @relation(fields: [userId], references: [id], onDelete: Cascade)
   userId           Int
   reviews          Review[]
   // 테스트겸 category가 지워져도 방은 남게 했고 유저 지워지면 같이 삭제되게함!
-  category         Category? @relation(fields: [categoryId], references: [id])
+  category         Category?      @relation(fields: [categoryId], references: [id])
   categoryId       Int?
-  createdAt        DateTime  @default(now())
-  updatedAt        DateTime  @updatedAt
+  amenity          Amenity[]
+  addOnService     AddOnService[]
+  createdAt        DateTime       @default(now())
+  updatedAt        DateTime       @updatedAt
+}
+
+model Amenity {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  room        Room[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model AddOnService {
+  id          Int      @id @default(autoincrement())
+  name        String
+  description String?
+  room        Room[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Experience {

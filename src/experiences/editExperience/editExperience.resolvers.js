@@ -22,7 +22,6 @@ export default {
         },
         { loggedInUser, protectResolver }
       ) => {
-        let perkDetail = [];
         if (perksId) {
           console.log("perksId", perksId);
           let result = true;
@@ -33,8 +32,6 @@ export default {
               });
               if (checkPerk === null) {
                 result = false;
-              } else {
-                perkDetail.push({ connect: { id: each } });
               }
             })
           );
@@ -87,7 +84,6 @@ export default {
 
         // console.log("changeStart", changeStart);
         // console.log("changeEnd", changeEnd);
-        console.log("perkDetail", perkDetail);
         const updatedExperience = await client.experience.update({
           where: {
             id,
@@ -102,7 +98,7 @@ export default {
             }), //uglyPassword 있다면! password uglyPassword를 넣겠다!
             ...(perksId && {
               perk: {
-                connect: perksId.map((id) => {
+                set: perksId.map((id) => {
                   return { id: id };
                 }),
               },

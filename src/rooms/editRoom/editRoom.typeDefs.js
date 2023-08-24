@@ -19,6 +19,8 @@ export default gql`
       pet_friendl: Boolean
       house_type: String
       things_to_know: String
+      amenitiesId: [Int]
+      addOnServicesId: [Int]
     ): MutationResponse!
   }
 `;

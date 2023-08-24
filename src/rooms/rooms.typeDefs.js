@@ -19,6 +19,26 @@ export default gql`
     things_to_know: String
     user: User!
     category: Category
+    amenity: [Amenity]
+    addOnService: [AddOnService]
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  type Amenity {
+    id: Int!
+    name: String!
+    description: String
+    room(page: Int!): [Room]
+    createdAt: String!
+    updatedAt: String!
+  }
+
+  type AddOnService {
+    id: Int!
+    name: String!
+    description: String
+    room(page: Int!): [Room]
     createdAt: String!
     updatedAt: String!
   }

@@ -23,9 +23,53 @@ export default {
           pet_friendly,
           house_type,
           things_to_know,
+          amenitiesId,
+          addOnServicesId,
         },
         { loggedInUser, protectResolver }
       ) => {
+        if (amenitiesId) {
+          let result = true;
+          await Promise.all(
+            amenitiesId.map(async (each) => {
+              const checkAmenity = await client.amenity.findUnique({
+                where: { id: each },
+              });
+              if (checkAmenity === null) {
+                result = false;
+              }
+            })
+          );
+
+          if (!result) {
+            return {
+              ok: false,
+              error: `Amenity does not exist`,
+            };
+          }
+        }
+
+        if (addOnServicesId) {
+          let result = true;
+          await Promise.all(
+            addOnServicesId.map(async (each) => {
+              const checkAddOnService = await client.addOnService.findUnique({
+                where: { id: each },
+              });
+              if (checkAddOnService === null) {
+                result = false;
+              }
+            })
+          );
+
+          if (!result) {
+            return {
+              ok: false,
+              error: `Add On Service does not exist`,
+            };
+          }
+        }
+
         if (categoryId) {
           const checkCategory = await client.category.findUnique({
             where: { id: categoryId },
@@ -67,6 +111,22 @@ export default {
                 connect: {
                   id: categoryId,
                 },
+              },
+            }),
+
+            ...(amenitiesId && {
+              amenity: {
+                set: amenitiesId.map((id) => {
+                  return { id: id };
+                }),
+              },
+            }),
+
+            ...(addOnServicesId && {
+              addOnService: {
+                set: addOnServicesId.map((id) => {
+                  return { id: id };
+                }),
               },
             }),
             name,
