@@ -1,3 +1,11 @@
+about db info
+Database name : blankhouse_graphql
+DATABASE_URL="postgresql://postgres:3049@localhost:5432/blankhouse_graphql?schema=public"
+DATABASE_URL="postgresql://johndoe:randompassword@localhost:5432/mydb?schema=public"
+<= npx prisma init 하면 자동생성됨.. 내용 조금 바꿔줘야함
+
+http://localhost:4000/graphql
+
 1. git add
 2. git remote ~~~
 3. npm init -y
@@ -52,6 +60,8 @@
 24. upload를 할려면 edit profile resolver + typeDefs 참고 scalar Upload랑 Upload: GraphQLUpload, 한번은 써줘야함
 
 25. withFilter 는 우리가 모든방을 subscription 할수없기에 필터를 하게 해준다, 원하는 방만!
+
+<!--async (root, args, context, info) => {  인자 순서이다!-->
 
 26. where 쓸때 subscription roomupdate참고
     const room = await client.room.findFirst({

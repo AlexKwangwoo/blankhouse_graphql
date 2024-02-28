@@ -61,8 +61,13 @@ const startServer = async () => {
     context: async (ctx) => {
       // console.log("ctx", ctx);
       if (ctx.req) {
-        // console.log("come req");
+        // console.log("come req", ctx.req);
         // 여기는 소켓과 다르게 일반 request에 보내는 context가될것임
+
+        // 이런식으로 http heaeers에 graphql에 넣어줘야함!
+        // {
+        //   "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzA5MDYyNDE3fQ.bew-9bHM7txF7ECUbDD7_41zrU-8SYjdDkNRnDqGcbo"
+        // }
         return {
           loggedInUser: await getUser(ctx.req.headers.token),
         };
@@ -82,8 +87,11 @@ const startServer = async () => {
       },
     ],
   });
+  // server 는 아폴로 써버
   await server.start();
   server.applyMiddleware({ app });
+
+  // httpServer 는 http 서버
   httpServer.listen(process.env.PORT, () =>
     console.log(
       `🚀 Server: http://localhost:${process.env.PORT}${server.graphqlPath}`
